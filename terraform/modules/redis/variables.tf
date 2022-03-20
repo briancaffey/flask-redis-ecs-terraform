@@ -62,3 +62,13 @@ variable "ecs_sg_id" {
   type        = string
   description = "ECS Security Group ID"
 }
+
+variable "log_group_name" {
+  type        = string
+  description = "Name of the CloudWatch Logs group"
+}
+
+variable "log_stream_prefix" {
+  type        = string
+  description = "Name of the CloudWatch Logs stream"
+}

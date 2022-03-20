@@ -1,3 +1,14 @@
+resource "aws_cloudwatch_log_group" "this" {
+  name              = var.log_group_name
+  retention_in_days = 1
+}
+
+resource "aws_cloudwatch_log_stream" "this" {
+  name           = var.log_stream_prefix
+  log_group_name = aws_cloudwatch_log_group.this.name
+}
+
+
 resource "aws_ecs_task_definition" "this" {
   family       = "${terraform.workspace}-${var.name}"
   network_mode = "awsvpc"
@@ -13,9 +24,9 @@ resource "aws_ecs_task_definition" "this" {
       logConfiguration = {
         logDriver = "awslogs"
         options = {
-          "awslogs-group"         = "redis"
+          "awslogs-group"         = var.log_group_name
           "awslogs-region"        = var.region
-          "awslogs-stream-prefix" = "redis"
+          "awslogs-stream-prefix" = var.log_stream_prefix
         }
       }
       portMappings = [

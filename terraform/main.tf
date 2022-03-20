@@ -43,6 +43,8 @@ module "redis" {
   ecs_sg_id                = module.ecs.ecs_sg_id
   image                    = "redis:latest"
   region                   = var.region
+  log_group_name           = "/ecs/${terraform.workspace}/redis"
+  log_stream_prefix        = "redis"
   service_discovery_arn    = module.ecs.registry_arn
   ecs_service_iam_role_arn = module.ecs.service_iam_role_arn
 }
