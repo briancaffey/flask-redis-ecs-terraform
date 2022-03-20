@@ -28,3 +28,7 @@ def set_foo(path):
 def unset_foo():
     r.delete('foo')
     return "<b>foo</b> has been deleted"
+
+@app.route("/api/status/")
+def status():
+    return "OK"
