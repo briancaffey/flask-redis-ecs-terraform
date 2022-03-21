@@ -9,7 +9,7 @@ variable "vpc_id" {
 }
 
 variable "public_subnets" {
-  type     = list(string)
+  type        = list(string)
   description = "Public subnets to use for load balancer"
 }
 

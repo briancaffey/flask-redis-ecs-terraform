@@ -122,3 +122,18 @@ variable "health_check_interval" {
   default     = 7
   type        = number
 }
+
+variable "public_subnets" {
+  description = "Subnets to use for the app"
+  type        = list(string)
+}
+
+variable "ecs_sg_id" {
+  description = "ECS Security Group ID"
+  type        = string
+}
+
+variable "execution_role_arn" {
+  description = "Execution Role ARN"
+  type        = string
+}

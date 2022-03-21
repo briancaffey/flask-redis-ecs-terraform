@@ -49,6 +49,11 @@ variable "record_name" {
 
 # ECR
 
+variable "redis_image" {
+  type = string
+  description = "Copy of public redis image in private ECR"
+}
+
 variable "ecr_app_repo" {
   description = "URL of the ECR repository that contains the backend image"
 }

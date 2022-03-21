@@ -45,7 +45,8 @@ resource "aws_iam_role" "ecs_host" {
         Principal = {
           Service = [
             "ecs.amazonaws.com",
-            "ec2.amazonaws.com"
+            "ec2.amazonaws.com",
+            "ecs-tasks.amazonaws.com"
           ]
         }
         Action = "sts:AssumeRole"
@@ -205,23 +206,4 @@ resource "aws_service_discovery_private_dns_namespace" "this" {
   name        = "${terraform.workspace}-sd-ns"
   description = "Service discovery namespace"
   vpc         = var.vpc_id
-}
-
-resource "aws_service_discovery_service" "this" {
-  name = terraform.workspace
-
-  dns_config {
-    namespace_id = aws_service_discovery_private_dns_namespace.this.id
-
-    dns_records {
-      ttl  = 60
-      type = "A"
-    }
-
-    routing_policy = "MULTIVALUE"
-  }
-
-  health_check_custom_config {
-    failure_threshold = 1
-  }
 }

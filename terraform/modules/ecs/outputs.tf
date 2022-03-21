@@ -22,6 +22,10 @@ output "task_role_arn" {
   value = aws_iam_role.ecs_task.arn
 }
 
-output "registry_arn" {
-  value = aws_service_discovery_service.this.arn
+output "execution_role_arn" {
+  value = aws_iam_role.ecs_host.arn
+}
+
+output "service_discovery_namespace_id" {
+  value = aws_service_discovery_private_dns_namespace.this.id
 }

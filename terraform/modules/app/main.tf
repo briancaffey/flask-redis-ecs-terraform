@@ -9,13 +9,15 @@ resource "aws_cloudwatch_log_stream" "this" {
 }
 
 resource "aws_ecs_task_definition" "this" {
-  family = "${terraform.workspace}-${var.name}"
+  family       = "${terraform.workspace}-${var.name}"
+  network_mode = "awsvpc"
+  cpu                      = 1024
+  memory                   = 2048
+  requires_compatibilities = ["FARGATE"]
   container_definitions = jsonencode([
     {
       name        = var.name
       image       = var.image
-      cpu         = var.cpu
-      memory      = var.memory
       essential   = true
       links       = []
       environment = var.env_vars
@@ -31,32 +33,40 @@ resource "aws_ecs_task_definition" "this" {
       portMappings = [
         {
           containerPort = var.port
-          hostPort      = 0
+          hostPort      = var.port
           protocol      = "tcp"
         }
       ]
     }
   ])
   task_role_arn = var.task_role_arn
+  execution_role_arn = var.execution_role_arn
 }
 
 resource "aws_ecs_service" "this" {
   name            = "${terraform.workspace}-${var.name}"
   cluster         = var.ecs_cluster_id
   task_definition = aws_ecs_task_definition.this.arn
-  iam_role        = var.ecs_service_iam_role_arn
-  desired_count   = var.app_count
+  launch_type     = "FARGATE"
+  desired_count = var.app_count
 
   load_balancer {
     target_group_arn = aws_lb_target_group.this.arn
     container_name   = var.name
     container_port   = var.port
   }
+
+  network_configuration {
+    security_groups = [var.ecs_sg_id]
+    subnets         = var.public_subnets
+    assign_public_ip = true
+  }
 }
 
 resource "aws_lb_target_group" "this" {
   port                 = var.port
   protocol             = "HTTP"
+  target_type          = "ip"
   vpc_id               = var.vpc_id
   deregistration_delay = 5
 
@@ -77,7 +87,6 @@ resource "aws_lb_target_group" "this" {
   lifecycle {
     create_before_destroy = true
   }
-
 }
 
 resource "aws_lb_listener_rule" "this" {

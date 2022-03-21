@@ -32,11 +32,6 @@ variable "image" {
   description = "Container image from ECS to run"
 }
 
-variable "service_discovery_arn" {
-  type        = string
-  description = "Service discovery ARN"
-}
-
 variable "name" {
   type        = string
   description = "Name to use for container"
@@ -71,4 +66,18 @@ variable "log_group_name" {
 variable "log_stream_prefix" {
   type        = string
   description = "Name of the CloudWatch Logs stream"
+}
+
+variable "service_discovery_namespace_id" {
+  type = string
+}
+
+variable "task_role_arn" {
+  description = "Task Role ARN"
+  type        = string
+}
+
+variable "execution_role_arn" {
+  description = "Execution Role ARN"
+  type        = string
 }

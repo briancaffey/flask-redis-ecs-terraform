@@ -38,10 +38,11 @@ resource "aws_lb" "this" {
 }
 
 resource "aws_alb_target_group" "default" {
-  name     = "${terraform.workspace}-default-tg"
-  port     = 80
-  protocol = "HTTP"
-  vpc_id   = var.vpc_id
+  name        = "${terraform.workspace}-default-tg"
+  port        = 80
+  protocol    = "HTTP"
+  target_type = "ip"
+  vpc_id      = var.vpc_id
 
   health_check {
     path                = var.health_check_path

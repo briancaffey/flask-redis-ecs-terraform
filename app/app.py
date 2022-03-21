@@ -5,10 +5,13 @@ import redis
 
 app = Flask(__name__)
 
-r = redis.Redis(
-    host=os.environ.get("REDIS_HOST", "redis"),
-    port=6379,
-)
+try:
+    r = redis.Redis(
+        host=os.environ.get("REDIS_HOST", "redis"),
+        port=6379,
+    )
+except:
+    pass
 
 @app.route("/foo")
 def hello_world():
