@@ -47,6 +47,7 @@ resource "aws_ecs_service" "this" {
   name            = "${terraform.workspace}-${var.name}"
   cluster         = var.ecs_cluster_id
   task_definition = aws_ecs_task_definition.this.arn
+  enable_execute_command = true
   launch_type     = "FARGATE"
   desired_count = var.app_count
 

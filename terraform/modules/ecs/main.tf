@@ -105,7 +105,7 @@ resource "aws_iam_role_policy" "ecs_task" {
     Statement = [
       {
         Effect   = "Allow"
-        Action   = ["s3:*"]
+        Action   = ["s3:*", "ssmmessages:*"]
         Resource = ["*"]
       }
     ]
